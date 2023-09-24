@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.optimus.osasco.duat.protobuf";
+option go_package = "duat/pb";
+option objc_class_prefix = "HLW";
+
+package duat;
+
+import "document.proto";
+import "department.proto";
+import "document_image.proto";
+
+service DepartmentService {
+  rpc FindByID(IDRequest) returns (DepartmentReply);
+  rpc All(PageRequest) returns (DepartmentListReply);
+}
+
+service DocumentService {
+  rpc All(PageRequest) returns (DocumentListReply);
+  rpc FindByID(UUIDRequest) returns (DocumentReply);
+  rpc Store(DocumentRequest) returns (DocumentReply);
+}
+
+service ImageService {
+  rpc Store(stream DocumentImageRequest) returns (DocumentImageReply);
+  rpc Upload(stream UploadRequest) returns (UploadReply);
+}
+
+message PageRequest {
+  uint32 page = 1;
+}
+
+message UUIDRequest {
+  string client_id = 1;
+  string id = 2;
+}
+
+message IDRequest {
+  string client_id = 1;
+  uint64 id = 2;
+}
+
+message DocumentRequest {
+  string document_type_id = 1;
+  string department_id = 2;
+  string code = 3;
+  string identity = 4;
+  string name = 5;
+  optional string comment = 6;
+  optional string storage = 7;
+  string doc_date = 9;
+}
+
+message DocumentImageRequest {
+  bytes image = 1;
+  string document_id = 2;
+  StorageType storage_type = 3;
+}
+
+message UploadRequest {
+  string client_id = 1;
+  string document_id = 2;
+  string image_ext = 3;
+  bytes data = 4;
+}
+
+message UploadReply {
+  string filename = 1;
+  uint64 filesize = 2;
+  uint64 uploaded_at = 3;
+}

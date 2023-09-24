@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.optimus.osasco.duat.protobuf";
+option go_package = "duat/pb";
+option objc_class_prefix = "HLW";
+
+package duat;
+
+
+message DocumentFlagReply {
+
+  enum FlagType {
+    IMPORTANT = 0;
+    REVISE = 1;
+  }
+
+  uint64 id = 1;
+  FlagType flag_type = 2;
+  bool complete = 3;
+  string comment = 4;
+  uint64 create_at = 5;
+  uint64 updated_at = 6;
+  optional uint64 deleted_at = 7;
+}
